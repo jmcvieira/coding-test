@@ -1,6 +1,9 @@
 package org.nuxeo;
 
 
+import java.util.Arrays;
+import java.util.HashMap;
+
 /**
  * This is where you have to code.
  * 
@@ -20,8 +23,15 @@ public class ThisIsWhereYouCode {
      *         extension without the period otherwise
      */
     public String getFileNameExtension(String filename) {
-        // XXX implement me !
-        return null;
+        if (filename == null || !filename.contains("."))
+            return null;
+        else {
+            String[] split = filename.split("\\.");
+            if (split.length == 1)
+                return "";
+            else
+                return split[1];
+        }
     }
 
     /**
@@ -31,8 +41,22 @@ public class ThisIsWhereYouCode {
      * @return null if input is null and the longest string otherwise
      */
     public String getLongestString(Object[] array) {
-        // XXX implement me !
-        return null;
+        if (array == null)
+            return null;
+        else {
+            // Falta verificar arrays de objectos dentro do array inicial
+            String[] stringArray = Arrays.copyOf(array, array.length, String[].class);
+            String longest = null;
+            int maxLength = 0;
+            for (String s : stringArray) {
+                int length = s.length();
+                if (length > maxLength) {
+                    maxLength = length;
+                    longest = s;
+                }
+            }
+            return longest;
+        }
     }
 
     /**
@@ -43,8 +67,24 @@ public class ThisIsWhereYouCode {
      * @return true if both arrays contains the same values
      */
     public boolean areArraysEquals(String[] array1, String[] array2) {
-        // XXX implement me !
-        return false;
+        if (array1 == null && array2 == null)
+            return true;
+
+        if (array1 == null || array2 == null)
+            return false;
+
+        int n1 = array1.length;
+        int n2 = array2.length;
+
+        if (n1 != n2)
+            return false;
+
+        for (int i = 0; i < n1; i++) {
+            if (!array1[i].equals(array2[i]))
+                return false;
+        }
+
+        return true;
     }
 
     /**
@@ -57,8 +97,28 @@ public class ThisIsWhereYouCode {
      * @return the compressed String or null if the input is null
      */
     public String getCompressedString(String input) {
-        // XXX implement me !
-        return null;
+        if (input == null)
+            return null;
+        else {
+            String compressed = "";
+            int length = input.length();
+            for (int i = 0; i < length;) {
+                char c1 = input.charAt(i);
+                int count = 0;
+                for (int j = 0; j < length; j++) {
+                    char c2 = input.charAt(j);
+                    if (c1 == c2) {
+                        count++;
+                        i++;
+                    }
+                }
+                if (count == 1)
+                    compressed += new StringBuilder().append("").append(c1).toString();
+                else
+                    compressed += count + new StringBuilder().append("").append(c1).toString();
+            }
+            return compressed;
+        }
     }
 
     /**
@@ -69,8 +129,20 @@ public class ThisIsWhereYouCode {
      * @return the sorted array
      */
     public String[] getSortedArray(String[] array) {
-        // XXX implement me !
-        return null;
-    }
+        int length = array.length;
+        String[] newArray = new String[length];
+        HashMap<String, String> corresponding = new HashMap<String, String>();
+        for (int i = 0; i < length; i++) {
+            corresponding.put(getCompressedString(array[i]), array[i]);
+            newArray[i] = getCompressedString(array[i]);
+        }
 
+        Arrays.sort(newArray);
+        String[] returningArray = new String[length];
+        for (int i = 0; i < length; i++) {
+            returningArray[i] = corresponding.get(newArray[i]);
+        }
+
+        return returningArray;
+    }
 }
