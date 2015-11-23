@@ -44,17 +44,31 @@ public class ThisIsWhereYouCode {
         if (array == null)
             return null;
         else {
-            // Falta verificar arrays de objectos dentro do array inicial
-            String[] stringArray = Arrays.copyOf(array, array.length, String[].class);
+            int numElem = array.length;
+            String[] longestStringInEachPos = new String[numElem];
+            for (int i = 0; i < numElem; i++) {
+                Object o = array[i];
+                if (o instanceof Object[]) {
+                    longestStringInEachPos[i] = getLongestString((Object[]) o);
+                }
+                if (o instanceof String) {
+                    longestStringInEachPos[i] = o.toString();
+                }
+            }
+
             String longest = null;
             int maxLength = 0;
-            for (String s : stringArray) {
+            for (String s : longestStringInEachPos) {
+                if (s == null) {
+                    continue;
+                }
                 int length = s.length();
                 if (length > maxLength) {
                     maxLength = length;
                     longest = s;
                 }
             }
+
             return longest;
         }
     }
